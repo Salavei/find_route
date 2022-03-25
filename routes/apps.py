@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class TrainsConfig(AppConfig):
+class RoutesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'trains'
-    verbose_name = 'Поезда'
+    name = 'routes'
+    verbose_name = 'Маршруты'
