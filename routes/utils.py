@@ -45,7 +45,7 @@ def get_routes(request, form) -> dict:
         right_ways = all_ways
     routes = []
     all_trains = {}
-    for q in Train.objects.all():
+    for q in Train.objects.all().select_related('from_city', 'to_city'):
         all_trains.setdefault((q.from_city_id, q.to_city_id), [])
         all_trains[(q.from_city_id, q.to_city_id)].append(q)
     for route in right_ways:
@@ -60,7 +60,6 @@ def get_routes(request, form) -> dict:
             routes.append(tmp)
     if not routes:
         raise ValueError('Время в пути больше заданного')
-    print(routes)
     sorted_routes = []
     if len(routes) == 1:
         sorted_routes = routes
@@ -72,6 +71,5 @@ def get_routes(request, form) -> dict:
                 if time == route['total_time']:
                     sorted_routes.append(route)
     context['routes'] = sorted_routes
-    context['cities'] = {'from_city': data['from_city'].name, 'to_city': data['to_city'].name}
-    print(context)
+    context['cities'] = {'from_city': data['from_city'], 'to_city': data['to_city']}
     return context

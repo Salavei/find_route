@@ -1,7 +1,6 @@
 from django.db import models
 from cities.models import City
 from trains.models import Train
-from django.core.exceptions import ValidationError
 
 
 class Route(models.Model):
