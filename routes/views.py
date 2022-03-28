@@ -4,6 +4,9 @@ from django.contrib import messages
 from .utils import get_routes
 from trains.models import Train
 from cities.models import City
+from .models import Route
+from django.views.generic import ListView, DetailView
+
 
 def home(request):
     form = RouteForm()
@@ -45,7 +48,7 @@ def add_route(request):
                 'to_city': cities[to_city_id],
                 'travel_times': total_time,
                 'trains': qs,
-                                      })
+            })
             context['form'] = form
         return render(request, 'routes/create.html', context)
     else:
@@ -64,3 +67,14 @@ def save_route(request):
     else:
         messages.error(request, 'Невозможно сохранить несуществующий маршрут')
         return redirect('/')
+
+
+class RouteListView(ListView):
+    paginate_by = 10
+    model = Route
+    template_name = 'routes/list.html'
+
+
+class RouteDetailView(DetailView):
+    queryset = Route.objects.all()
+    template_name = 'routes/detail.html'
