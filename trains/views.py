@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.urls import reverse_lazy
 from trains.models import Train
 from django.views.generic import DetailView, ListView
@@ -49,10 +49,12 @@ class TrainUpdateView(SuccessMessageMixin, UpdateView):
 
 class TrainDeleteView(DeleteView):
     model = Train
+    template_name = 'trains/delete.html'
     success_url = reverse_lazy('trains:home')
 
-    def get(self, request, *args, **kwargs):
-        messages.success(request, 'Поезд успешно удален')
-        return self.post(request, *args, **kwargs)
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, 'Поезд успешно удален')
+        return super().delete(*args, **kwargs)
+
 
 
